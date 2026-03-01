@@ -1,0 +1,128 @@
+// components/layout/Sidebar.module.scss
+@use '@/styles/variables' as *;
+
+.sidebar {
+  width: $sidebar-w;
+  min-height: 100vh;
+  background: $bg-surface;
+  border-right: 1px solid $border-faint;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+// Logo
+.logo {
+  @include flex-center(12px);
+  padding: 22px 18px 18px;
+  border-bottom: 1px solid $border-faint;
+}
+
+.logoMark {
+  width: 36px;
+  height: 36px;
+  background: $accent-dim;
+  border: 1px solid rgba($accent, 0.3);
+  border-radius: $radius-sm;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $accent;
+  flex-shrink: 0;
+}
+
+.logoText {
+  font-family: $font-display;
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: $text-primary;
+}
+
+.logoSub {
+  font-size: 0.68rem;
+  color: $text-muted;
+  margin-top: 1px;
+  font-weight: 400;
+}
+
+// Nav
+.nav {
+  flex: 1;
+  padding: 14px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.sectionLabel {
+  display: block;
+  font-size: 0.63rem;
+  font-weight: 700;
+  color: $text-muted;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  padding: 10px 8px 5px;
+  margin-top: 6px;
+  font-family: $font-display;
+
+  &:first-child { margin-top: 0; }
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 10px;
+  border-radius: $radius-sm;
+  color: $text-secondary;
+  font-size: 0.86rem;
+  font-weight: 500;
+  transition: background $transition, color $transition;
+  cursor: pointer;
+  text-decoration: none;
+  animation: slide-in-left 0.2s ease both;
+
+  &:hover {
+    background: $bg-elevated;
+    color: $text-primary;
+  }
+
+  &.active {
+    background: $accent-dim;
+    color: $accent;
+    font-weight: 600;
+
+    .navIcon { color: $accent; }
+  }
+}
+
+.navIcon {
+  display: flex;
+  color: $text-muted;
+  transition: color $transition;
+  flex-shrink: 0;
+}
+
+.navItem.active .navIcon,
+.navItem:hover .navIcon {
+  color: inherit;
+}
+
+// Footer
+.foot {
+  padding: 14px 18px;
+  border-top: 1px solid $border-faint;
+  font-size: 0.7rem;
+  color: $text-muted;
+  font-family: $font-mono;
+}
+
+@keyframes slide-in-left {
+  from { opacity: 0; transform: translateX(-8px); }
+  to   { opacity: 1; transform: translateX(0); }
+}

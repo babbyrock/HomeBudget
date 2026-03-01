@@ -1,0 +1,98 @@
+// ============================================================
+// styles/_variables.scss
+// Design tokens — usados via @use em todos os arquivos SCSS.
+// Syne (display/títulos) + Epilogue (corpo) + JetBrains Mono (valores)
+// Tema: papel de parede grafite com detalhes em âmbar/ouro
+// ============================================================
+
+// --- Cores ---
+$bg-base:      #111214;
+$bg-surface:   #18191d;
+$bg-card:      #1e2025;
+$bg-elevated:  #26282e;
+$bg-input:     #14151a;
+
+$border-faint:  rgba(255,255,255,0.05);
+$border-subtle: rgba(255,255,255,0.09);
+$border-strong: rgba(255,255,255,0.16);
+
+$text-primary:   #f0f0ec;
+$text-secondary: #9a9b9f;
+$text-muted:     #5c5e65;
+
+// Acento principal — âmbar/ouro
+$accent:        #f0b429;
+$accent-dim:    rgba(240, 180, 41, 0.12);
+$accent-hover:  #e5a51a;
+
+// Semânticas
+$color-green:     #4ade80;
+$color-green-dim: rgba(74, 222, 128, 0.1);
+$color-red:       #f87171;
+$color-red-dim:   rgba(248, 113, 113, 0.1);
+$color-blue:      #60a5fa;
+$color-blue-dim:  rgba(96, 165, 250, 0.1);
+$color-purple:    #c084fc;
+$color-purple-dim: rgba(192, 132, 252, 0.1);
+
+// --- Tipografia ---
+$font-display: 'Syne', sans-serif;
+$font-body:    'Epilogue', sans-serif;
+$font-mono:    'JetBrains Mono', monospace;
+
+// --- Espaçamento ---
+$sidebar-w: 256px;
+
+// --- Bordas ---
+$radius-xs: 4px;
+$radius-sm: 8px;
+$radius-md: 12px;
+$radius-lg: 18px;
+$radius-xl: 24px;
+
+// --- Sombras ---
+$shadow-sm: 0 1px 4px rgba(0,0,0,0.5);
+$shadow-md: 0 4px 20px rgba(0,0,0,0.6);
+$shadow-lg: 0 12px 40px rgba(0,0,0,0.7);
+
+// --- Transições ---
+$transition: 0.16s ease;
+
+// --- Mixins ---
+@mixin flex-center($gap: 0) {
+  display: flex;
+  align-items: center;
+  @if $gap > 0 { gap: $gap; }
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin card {
+  background: $bg-card;
+  border: 1px solid $border-subtle;
+  border-radius: $radius-md;
+}
+
+@mixin focus-ring {
+  outline: none;
+  border-color: $accent;
+  box-shadow: 0 0 0 3px $accent-dim;
+}
+
+@mixin badge($bg, $color) {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 9px;
+  border-radius: 20px;
+  background: $bg;
+  color: $color;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}

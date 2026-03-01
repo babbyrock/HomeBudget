@@ -1,0 +1,65 @@
+// components/ui/Button.module.scss
+@use '@/styles/variables' as *;
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: $font-display;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-radius: $radius-sm;
+  transition: background $transition, border-color $transition,
+    color $transition, opacity $transition, transform 0.1s;
+  white-space: nowrap;
+  letter-spacing: 0.01em;
+
+  &:disabled { opacity: 0.45; cursor: not-allowed; }
+  &:not(:disabled):active { transform: scale(0.97); }
+}
+
+// Sizes
+.md { padding: 9px 18px; font-size: 0.875rem; }
+.sm { padding: 5px 12px; font-size: 0.8rem; }
+
+// Variants
+.primary {
+  background: $accent;
+  color: #0d0d0d;
+  border-color: $accent;
+  &:hover:not(:disabled) { background: $accent-hover; border-color: $accent-hover; }
+}
+
+.secondary {
+  background: $bg-elevated;
+  color: $text-primary;
+  border-color: $border-subtle;
+  &:hover:not(:disabled) { background: lighten($bg-elevated, 4%); border-color: $border-strong; }
+}
+
+.danger {
+  background: $color-red-dim;
+  color: $color-red;
+  border-color: $color-red;
+  &:hover:not(:disabled) { background: $color-red; color: #fff; }
+}
+
+.ghost {
+  background: transparent;
+  color: $text-secondary;
+  border-color: transparent;
+  &:hover:not(:disabled) { background: $bg-elevated; color: $text-primary; }
+}
+
+// Loading spinner
+.spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255,255,255,0.2);
+  border-top-color: currentColor;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }

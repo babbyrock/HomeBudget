@@ -1,0 +1,15 @@
+<Solution>
+  <Folder Name="/Core/">
+    <Project Path="HomeBudget.Application/HomeBudget.Application.csproj" />
+    <Project Path="HomeBudget.Domain/HomeBudget.Domain.csproj" Id="134790b9-e989-44a4-8bae-b20b23c1bac6" />
+  </Folder>
+  <Folder Name="/Infrastructure/">
+    <Project Path="HomeBudget.Persistence/HomeBudget.Persistence.csproj" />
+  </Folder>
+  <Folder Name="/Presentation/">
+    <Project Path="HomeBudget.API/HomeBudget.API.csproj" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+  </Folder>
+</Solution>

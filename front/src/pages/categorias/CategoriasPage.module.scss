@@ -1,0 +1,46 @@
+// pages/categorias/CategoriasPage.module.scss
+@use '@/styles/variables' as *;
+
+.tableWrap {
+  overflow-x: auto;
+  border-radius: $radius-md;
+  border: 1px solid $border-subtle;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+
+  thead {
+    background: $bg-elevated;
+    th {
+      padding: 10px 16px;
+      text-align: left;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: $text-muted;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-family: $font-display;
+    }
+  }
+
+  tbody tr {
+    border-top: 1px solid $border-faint;
+    transition: background $transition;
+    &:hover { background: $bg-elevated; }
+
+    td { padding: 13px 16px; vertical-align: middle; }
+  }
+}
+
+.desc {
+  font-weight: 500;
+  color: $text-primary;
+  max-width: 400px;
+}
+
+.badgeGreen  { @include badge($color-green-dim, $color-green); }
+.badgeRed    { @include badge($color-red-dim, $color-red); }
+.badgePurple { @include badge($color-purple-dim, $color-purple); }

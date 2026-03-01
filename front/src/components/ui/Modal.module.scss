@@ -1,0 +1,66 @@
+// components/ui/Modal.module.scss
+@use '@/styles/variables' as *;
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(5px);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fade-in 0.15s ease;
+}
+
+.modal {
+  background: $bg-card;
+  border: 1px solid $border-strong;
+  border-radius: $radius-lg;
+  width: 100%;
+  max-width: 460px;
+  box-shadow: $shadow-lg;
+  animation: slide-up 0.2s ease;
+
+  &.wide { max-width: 600px; }
+}
+
+.header {
+  @include flex-between;
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid $border-faint;
+}
+
+.title {
+  font-family: $font-display;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+// body e footer são classes usadas nas páginas diretamente
+:global(.modal-body) {
+  padding: 22px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+:global(.modal-footer) {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 14px 24px 20px;
+  border-top: 1px solid $border-faint;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

@@ -1,0 +1,107 @@
+// pages/pessoas/PessoasPage.module.scss
+@use '@/styles/variables' as *;
+
+.tableWrap {
+  overflow-x: auto;
+  border-radius: $radius-md;
+  border: 1px solid $border-subtle;
+  animation: fade-in 0.25s ease;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+
+  thead {
+    background: $bg-elevated;
+
+    th {
+      padding: 10px 16px;
+      text-align: left;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: $text-muted;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-family: $font-display;
+      white-space: nowrap;
+    }
+  }
+
+  tbody {
+    .row {
+      border-top: 1px solid $border-faint;
+      transition: background $transition;
+
+      &:hover { background: $bg-elevated; }
+    }
+
+    td {
+      padding: 13px 16px;
+      vertical-align: middle;
+    }
+  }
+}
+
+.idx {
+  color: $text-muted;
+  font-size: 0.75rem;
+  width: 40px;
+}
+
+.nome {
+  font-weight: 600;
+  color: $text-primary;
+}
+
+// Badges
+.badgeAmber { @include badge($color-red-dim, darken($color-red, 5%)); }
+.badgeBlue  { @include badge($color-blue-dim, $color-blue); }
+
+// Action buttons
+.actions {
+  display: flex;
+  gap: 4px;
+  justify-content: flex-end;
+}
+
+.iconBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: $radius-xs;
+  border: none;
+  cursor: pointer;
+  color: $text-muted;
+  background: transparent;
+  transition: background $transition, color $transition;
+
+  &:hover { background: $bg-elevated; color: $text-primary; }
+  &.danger:hover { background: $color-red-dim; color: $color-red; }
+}
+
+// Delete modal
+.deleteText {
+  font-size: 0.9rem;
+  color: $text-secondary;
+  line-height: 1.6;
+
+  strong { color: $text-primary; }
+}
+
+.deleteWarn {
+  font-size: 0.83rem;
+  color: $color-red;
+  background: $color-red-dim;
+  border: 1px solid rgba($color-red, 0.2);
+  border-radius: $radius-sm;
+  padding: 10px 12px;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

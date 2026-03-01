@@ -1,0 +1,66 @@
+// components/ui/Field.module.scss
+@use '@/styles/variables' as *;
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: $text-secondary;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  font-family: $font-display;
+}
+
+.hint {
+  font-size: 0.76rem;
+  color: $text-muted;
+}
+
+.error {
+  font-size: 0.78rem;
+  color: $color-red;
+  font-weight: 500;
+}
+
+// Estilos para os inputs reais (aplicados globalmente nos formulários)
+:global(.field-input),
+:global(.field-select),
+:global(.field-textarea) {
+  background: $bg-input;
+  border: 1px solid $border-subtle;
+  border-radius: $radius-sm;
+  color: $text-primary;
+  font-family: $font-body;
+  font-size: 0.9rem;
+  padding: 10px 13px;
+  width: 100%;
+  outline: none;
+  transition: border-color $transition, box-shadow $transition;
+
+  &::placeholder { color: $text-muted; }
+
+  &:focus {
+    @include focus-ring;
+  }
+
+  &.error {
+    border-color: $color-red;
+    &:focus { box-shadow: 0 0 0 3px $color-red-dim; }
+  }
+}
+
+:global(.field-select) {
+  cursor: pointer;
+  option { background: $bg-elevated; }
+}
+
+:global(.field-textarea) {
+  resize: vertical;
+  min-height: 80px;
+  line-height: 1.55;
+}
