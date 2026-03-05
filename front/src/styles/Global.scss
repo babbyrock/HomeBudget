@@ -1,53 +1,32 @@
-// ============================================================
-// styles/global.scss
-// Reset, base e classes utilitárias globais
-// ============================================================
-
 @use 'variables' as *;
 
-// ---- Reset ----
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-html { font-size: 16px; }
+html { font-size: 15px; }
 
 body {
   font-family: $font-body;
   background: $bg-base;
   color: $text-primary;
-  line-height: 1.65;
+  line-height: 1.6;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
 }
 
-#root {
-  display: flex;
-  min-height: 100vh;
-}
+#root { display: flex; min-height: 100vh; }
 
-// ---- Scrollbar ----
 ::-webkit-scrollbar { width: 5px; height: 5px; }
-::-webkit-scrollbar-track { background: $bg-base; }
+::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: $bg-elevated; border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: $border-strong; }
 
-// ---- Tipografia ----
-h1, h2, h3, h4 {
+h1, h2, h3 {
   font-family: $font-display;
-  font-weight: 700;
-  line-height: 1.2;
+  line-height: 1.25;
 }
 
 a { color: inherit; text-decoration: none; }
 
-// ---- Layout ----
-.layout {
-  display: flex;
-  width: 100%;
-}
+.layout { display: flex; width: 100%; }
 
 .main-content {
   flex: 1;
@@ -56,92 +35,76 @@ a { color: inherit; text-decoration: none; }
   flex-direction: column;
 }
 
-// ---- Page ----
 .page-header {
   padding: 32px 36px 0;
-  @include flex-between;
-  gap: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
   flex-wrap: wrap;
 }
 
 .page-title {
   font-family: $font-display;
-  font-size: 1.6rem;
-  font-weight: 800;
+  font-size: 1.35rem;
+  font-weight: 600;
   color: $text-primary;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.02em;
 }
 
 .page-subtitle {
-  font-size: 0.83rem;
+  font-size: 0.8rem;
   color: $text-muted;
   margin-top: 3px;
-  font-weight: 400;
 }
 
 .page-body {
   padding: 24px 36px 48px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
 }
 
-// ---- Spinner ----
 .loader-wrap {
   display: flex;
   justify-content: center;
-  align-items: center;
-  padding: 72px;
+  padding: 80px;
 }
 
 .spinner {
-  width: 28px;
-  height: 28px;
+  width: 22px;
+  height: 22px;
   border: 2px solid $border-subtle;
   border-top-color: $accent;
   border-radius: 50%;
   animation: spin 0.65s linear infinite;
 }
 
-// ---- Empty state ----
 .empty-state {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
   padding: 72px 20px;
   color: $text-muted;
   text-align: center;
 
-  svg { opacity: 0.25; }
-  p { font-size: 0.88rem; }
+  svg { opacity: 0.15; }
+  p { font-size: 0.85rem; max-width: 240px; }
 }
 
-// ---- Valores monetários ----
-.val-pos { color: $color-green; font-family: $font-mono; font-size: 0.9rem; }
-.val-neg { color: $color-red;   font-family: $font-mono; font-size: 0.9rem; }
-.val-neu { color: $text-secondary; font-family: $font-mono; font-size: 0.9rem; }
+.val-pos { color: $color-green; font-family: $font-mono; font-size: 0.85rem; }
+.val-neg { color: $color-red;   font-family: $font-mono; font-size: 0.85rem; }
+.val-neu { color: $text-secondary; font-family: $font-mono; font-size: 0.85rem; }
 
-// ---- Utilitários ----
 .text-muted { color: $text-muted; }
-.text-sm    { font-size: 0.85rem; }
-.text-xs    { font-size: 0.75rem; }
+.text-sm    { font-size: 0.82rem; }
+.text-xs    { font-size: 0.73rem; }
 .mono       { font-family: $font-mono; }
 
-// ---- Animações globais ----
-@keyframes spin { to { transform: rotate(360deg); } }
-
-@keyframes fade-in {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-
+@keyframes spin    { to { transform: rotate(360deg); } }
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
 @keyframes slide-up {
-  from { opacity: 0; transform: translateY(18px); }
+  from { opacity: 0; transform: translateY(12px); }
   to   { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes slide-in-left {
-  from { opacity: 0; transform: translateX(-12px); }
-  to   { opacity: 1; transform: translateX(0); }
 }

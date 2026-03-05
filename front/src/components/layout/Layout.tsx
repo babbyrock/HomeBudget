@@ -1,4 +1,3 @@
-// components/layout/Layout.tsx
 import { Outlet } from 'react-router-dom'
 import Sidebar from './Sidebar'
 

@@ -1,7 +1,6 @@
-// pages/relatorios/RelatorioPage.module.scss
 @use '@/styles/variables' as *;
+@use 'sass:color';
 
-// Stat cards
 .statGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -43,7 +42,6 @@
   &.red   { color: $color-red;   }
 }
 
-// Table
 .tableWrap {
   overflow-x: auto;
   border-radius: $radius-md;
@@ -87,7 +85,6 @@
   color: $text-primary;
 }
 
-// Total row
 .totalRow {
   td {
     background: $bg-elevated !important;
@@ -98,12 +95,10 @@
   }
 }
 
-// Badges finalidade
 .badgeGreen  { @include badge($color-green-dim, $color-green); }
 .badgeRed    { @include badge($color-red-dim, $color-red); }
 .badgePurple { @include badge($color-purple-dim, $color-purple); }
 
-// Spinning refresh icon
 .spin {
   animation: spin 0.8s linear infinite;
 }

@@ -1,29 +1,22 @@
-// ============================================================
-// pages/pessoas/PessoasPage.tsx
-//
-// Tecnologias:
-//  - React Query → busca/mutações de dados
-//  - Zustand     → controla qual modal está aberto
-//  - React Hook Form + Zod → formulários com validação
-// ============================================================
-
+import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { UserPlus, Pencil, Trash2, Users } from 'lucide-react'
+import { UserPlus, Pencil, Trash2, Users, ChevronLeft, ChevronRight } from 'lucide-react'
 import toast from 'react-hot-toast'
 
 import { pessoasApi } from '@/api/pessoas'
 import { queryKeys } from '@/api/queryKeys'
 import { pessoaSchema, type PessoaFormValues } from '@/schemas'
-import { useUiStore } from '@/store/uiStore'
 import Modal from '@/components/ui/Modal'
 import Button from '@/components/ui/Button'
 import Field from '@/components/ui/Field'
-import type { Pessoa } from '../types'
+import type { Pessoa } from '@/types'
 import styles from './PessoasPage.module.scss'
+import { useUiStore } from '@/store/uiStore'
 
-// ---- Formulário compartilhado (criar / editar) ----
+const PAGE_SIZE = 10
+
 interface PessoaFormProps {
   defaultValues?: PessoaFormValues
   onSubmit: (data: PessoaFormValues) => void
@@ -49,7 +42,6 @@ function PessoaForm({ defaultValues, onSubmit, onClose, isLoading, submitLabel }
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="modal-body">
-        {/* Campo: Nome */}
         <Field label="Nome *" error={errors.nome?.message}>
           <input
             {...register('nome')}
@@ -59,7 +51,6 @@ function PessoaForm({ defaultValues, onSubmit, onClose, isLoading, submitLabel }
           />
         </Field>
 
-        {/* Campo: Idade */}
         <Field
           label="Idade *"
           error={errors.idade?.message}
@@ -84,18 +75,15 @@ function PessoaForm({ defaultValues, onSubmit, onClose, isLoading, submitLabel }
   )
 }
 
-// ---- Modal de confirmação de exclusão ----
 function DeleteConfirmModal({ pessoa, onClose }: { pessoa: Pessoa; onClose: () => void }) {
   const qc = useQueryClient()
 
   const { mutate, isPending } = useMutation({
     mutationFn: () => pessoasApi.delete(pessoa.id),
     onSuccess: () => {
-      // Invalida cache de pessoas E transações (cascata)
-      qc.invalidateQueries({ queryKey: queryKeys.pessoas })
-      qc.invalidateQueries({ queryKey: queryKeys.transacoes })
-      qc.invalidateQueries({ queryKey: queryKeys.relatorioPorPessoa })
-      qc.invalidateQueries({ queryKey: queryKeys.relatorioPorCategoria })
+      qc.invalidateQueries({ queryKey: ['pessoas'] })
+      qc.invalidateQueries({ queryKey: ['transacoes'] })
+      qc.invalidateQueries({ queryKey: ['relatorio'] })
       toast.success(`"${pessoa.nome}" e suas transações foram excluídas.`)
       onClose()
     },
@@ -109,7 +97,7 @@ function DeleteConfirmModal({ pessoa, onClose }: { pessoa: Pessoa; onClose: () =
           Tem certeza que deseja excluir <strong>{pessoa.nome}</strong>?
         </p>
         <p className={styles.deleteWarn}>
-          ⚠ Todas as transações desta pessoa serão excluídas permanentemente.
+          Todas as transações desta pessoa serão excluídas permanentemente.
         </p>
       </div>
       <div className="modal-footer">
@@ -122,33 +110,33 @@ function DeleteConfirmModal({ pessoa, onClose }: { pessoa: Pessoa; onClose: () =
   )
 }
 
-// ---- Página principal ----
 export default function PessoasPage() {
   const { activeModal, targetPessoa, openModal, closeModal } = useUiStore()
   const qc = useQueryClient()
+  const [page, setPage] = useState(1)
 
-  // ---- Queries ----
-  const { data: pessoas = [], isLoading } = useQuery({
-    queryKey: queryKeys.pessoas,
-    queryFn: pessoasApi.list,
+  const { data, isLoading } = useQuery({
+    queryKey: queryKeys.pessoas(page, PAGE_SIZE),
+    queryFn: () => pessoasApi.list(page, PAGE_SIZE),
   })
 
-  // ---- Mutation: criar ----
+  const pessoas = data?.items ?? []
+
   const createMutation = useMutation({
     mutationFn: pessoasApi.create,
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: queryKeys.pessoas })
+      qc.invalidateQueries({ queryKey: ['pessoas'] })
       toast.success('Pessoa criada!')
       closeModal()
     },
     onError: (e: Error) => toast.error(e.message),
   })
 
-  // ---- Mutation: editar ----
   const updateMutation = useMutation({
-    mutationFn: (data: PessoaFormValues) => pessoasApi.update(targetPessoa!.id, data),
+    mutationFn: (formData: PessoaFormValues) =>
+      pessoasApi.update(targetPessoa!.id, formData),
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: queryKeys.pessoas })
+      qc.invalidateQueries({ queryKey: ['pessoas'] })
       toast.success('Pessoa atualizada!')
       closeModal()
     },
@@ -157,7 +145,6 @@ export default function PessoasPage() {
 
   return (
     <>
-      {/* Header */}
       <div className="page-header">
         <div>
           <h1 className="page-title">Pessoas</h1>
@@ -168,7 +155,6 @@ export default function PessoasPage() {
         </Button>
       </div>
 
-      {/* Body */}
       <div className="page-body">
         {isLoading ? (
           <div className="loader-wrap"><div className="spinner" /></div>
@@ -181,54 +167,88 @@ export default function PessoasPage() {
             </Button>
           </div>
         ) : (
-          <div className={styles.tableWrap}>
-            <table className={styles.table}>
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Nome</th>
-                  <th>Idade</th>
-                  <th>Perfil</th>
-                  <th />
-                </tr>
-              </thead>
-              <tbody>
-                {pessoas.map((p, i) => (
-                  <tr key={p.id} className={styles.row}>
-                    <td className={`mono ${styles.idx}`}>{i + 1}</td>
-                    <td className={styles.nome}>{p.nome}</td>
-                    <td>{p.idade} anos</td>
-                    <td>
-                      {p.idade < 18
-                        ? <span className={styles.badgeAmber}>Menor de idade</span>
-                        : <span className={styles.badgeBlue}>Maior de idade</span>
-                      }
-                    </td>
-                    <td>
-                      <div className={styles.actions}>
-                        <button className={styles.iconBtn} title="Editar"
-                          onClick={() => openModal('editPessoa', p)}>
-                          <Pencil size={14} />
-                        </button>
-                        <button className={`${styles.iconBtn} ${styles.danger}`} title="Excluir"
-                          onClick={() => openModal('deletePessoa', p)}>
-                          <Trash2 size={14} />
-                        </button>
-                      </div>
-                    </td>
+          <>
+            <div className={styles.tableWrap}>
+              <table className={styles.table}>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Nome</th>
+                    <th>Idade</th>
+                    <th>Perfil</th>
+                    <th />
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {pessoas.map((p, i) => (
+                    <tr key={p.id} className={styles.row}>
+                      <td className={`mono ${styles.idx}`}>
+                        {(page - 1) * PAGE_SIZE + i + 1}
+                      </td>
+                      <td className={styles.nome}>{p.nome}</td>
+                      <td>{p.idade} anos</td>
+                      <td>
+                        {p.idade < 18
+                          ? <span className={styles.badgeAmber}>Menor de idade</span>
+                          : <span className={styles.badgeBlue}>Maior de idade</span>
+                        }
+                      </td>
+                      <td>
+                        <div className={styles.actions}>
+                          <button
+                            className={styles.iconBtn}
+                            title="Editar"
+                            onClick={() => openModal('editPessoa', p)}
+                          >
+                            <Pencil size={14} />
+                          </button>
+                          <button
+                            className={`${styles.iconBtn} ${styles.danger}`}
+                            title="Excluir"
+                            onClick={() => openModal('deletePessoa', p)}
+                          >
+                            <Trash2 size={14} />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {data && data.totalPages > 0 && (
+              <div className={styles.pagination}>
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  onClick={() => setPage(p => p - 1)}
+                  disabled={!data.hasPrevious}
+                >
+                  <ChevronLeft size={14} /> Anterior
+                </Button>
+                <span className={styles.pageInfo}>
+                  Página {data.page} de {data.totalPages}
+                  <span className="text-muted"> ({data.totalItems} registros)</span>
+                </span>
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  onClick={() => setPage(p => p + 1)}
+                  disabled={!data.hasNext}
+                >
+                  Próxima <ChevronRight size={14} />
+                </Button>
+              </div>
+            )}
+          </>
         )}
       </div>
 
-      {/* Modal: Criar */}
       {activeModal === 'createPessoa' && (
         <Modal title="Nova Pessoa" onClose={closeModal}>
           <PessoaForm
-            onSubmit={(data) => createMutation.mutate(data)}
+            onSubmit={(formData) => createMutation.mutate(formData)}
             onClose={closeModal}
             isLoading={createMutation.isPending}
             submitLabel="Criar pessoa"
@@ -236,12 +256,11 @@ export default function PessoasPage() {
         </Modal>
       )}
 
-      {/* Modal: Editar */}
       {activeModal === 'editPessoa' && targetPessoa && (
         <Modal title="Editar Pessoa" onClose={closeModal}>
           <PessoaForm
             defaultValues={{ nome: targetPessoa.nome, idade: targetPessoa.idade }}
-            onSubmit={(data) => updateMutation.mutate(data)}
+            onSubmit={(formData) => updateMutation.mutate(formData)}
             onClose={closeModal}
             isLoading={updateMutation.isPending}
             submitLabel="Salvar alterações"
@@ -249,7 +268,6 @@ export default function PessoasPage() {
         </Modal>
       )}
 
-      {/* Modal: Deletar */}
       {activeModal === 'deletePessoa' && targetPessoa && (
         <Modal title="Excluir Pessoa" onClose={closeModal}>
           <DeleteConfirmModal pessoa={targetPessoa} onClose={closeModal} />

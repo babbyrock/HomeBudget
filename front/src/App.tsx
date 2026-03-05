@@ -1,12 +1,5 @@
-// ============================================================
-// App.tsx
-// Providers: React Query + React Router
-// Rotas aninhadas sob o Layout (sidebar)
-// ============================================================
-
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { Toaster } from 'react-hot-toast'
 
 import Layout from '@/components/layout/Layout'
@@ -16,13 +9,10 @@ import TransacoesPage from '@/pages/transacoes/TransacoesPage'
 import RelatorioPessoasPage from '@/pages/listagem/RelatorioPessoasPage'
 import RelatorioCategoriasPage from '@/pages/listagem/RelatorioCategoriasPage'
 
-// Configuração do React Query
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      // Dados considerados fresh por 30s — evita refetch desnecessário
       staleTime: 30_000,
-      // 3 tentativas em caso de erro de rede
       retry: 1,
     },
   },
@@ -32,7 +22,6 @@ export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        {/* Toast notifications */}
         <Toaster
           position="top-right"
           toastOptions={{
@@ -61,8 +50,6 @@ export default function App() {
         </Routes>
       </BrowserRouter>
 
-      {/* Devtools do React Query (só em desenvolvimento) */}
-      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   )
 }

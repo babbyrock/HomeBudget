@@ -1,5 +1,5 @@
-// components/ui/Field.module.scss
 @use '@/styles/variables' as *;
+@use 'sass:color';
 
 .field {
   display: flex;
@@ -27,7 +27,6 @@
   font-weight: 500;
 }
 
-// Estilos para os inputs reais (aplicados globalmente nos formulários)
 :global(.field-input),
 :global(.field-select),
 :global(.field-textarea) {

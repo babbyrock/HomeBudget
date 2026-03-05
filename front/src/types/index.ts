@@ -1,82 +1,95 @@
-// ============================================================
-// types/index.ts
-// Tipos centrais — espelham os modelos/DTOs da WebAPI C#/.NET
-// ============================================================
-
 export interface Pessoa {
-  id: string;
-  nome: string;
-  idade: number;
+  id: number
+  nome: string
+  idade: number
 }
 
 export interface CreatePessoaDto {
-  nome: string;
-  idade: number;
+  nome: string
+  idade: number
 }
 
-export type Finalidade = 'despesa' | 'receita' | 'ambas';
+export interface PagedResult<T> {
+  items: T[]
+  totalItems: number
+  page: number
+  pageSize: number
+  totalPages: number
+  hasNext: boolean
+  hasPrevious: boolean
+}
+
+export type Finalidade = 'Despesa' | 'Receita' | 'Ambas'
 
 export interface Categoria {
-  id: string;
-  descricao: string;
-  finalidade: Finalidade;
+  id: number
+  descricao: string
+  finalidade: Finalidade
 }
 
 export interface CreateCategoriaDto {
-  descricao: string;
-  finalidade: Finalidade;
+  descricao: string
+  finalidade: Finalidade
 }
 
-export type TipoTransacao = 'despesa' | 'receita';
+export interface UpdateCategoriaDto {
+  descricao: string
+  finalidade: Finalidade
+}
+
+export type TipoTransacao = 'Despesa' | 'Receita'
 
 export interface Transacao {
-  id: string;
-  descricao: string;
-  valor: number;
-  tipo: TipoTransacao;
-  categoriaId: string;
-  pessoaId: string;
-  // campos expandidos (JOIN no backend)
-  categoriaNome?: string;
-  pessoaNome?: string;
+  id: number
+  descricao: string
+  valor: number
+  tipo: TipoTransacao
+  nomePessoa: string      
+  nomeCategoria: string   
 }
 
 export interface CreateTransacaoDto {
-  descricao: string;
-  valor: number;
-  tipo: TipoTransacao;
-  categoriaId: string;
-  pessoaId: string;
+  descricao: string
+  valor: number
+  tipo: TipoTransacao
+  categoriaId: number
+  pessoaId: number
 }
 
-// Relatórios
+export interface UpdateTransacaoDto {
+  descricao: string
+  valor: number
+  tipo: TipoTransacao
+  categoriaId: number
+  pessoaId: number
+}
+
 export interface TotalPessoa {
-  pessoaId: string;
-  pessoaNome: string;
-  totalReceitas: number;
-  totalDespesas: number;
-  saldo: number;
+  id: number
+  nome: string
+  totalReceitas: number
+  totalDespesas: number
+  saldo: number
 }
 
-export interface RelatorioTotaisPorPessoa {
-  itens: TotalPessoa[];
-  totalGeralReceitas: number;
-  totalGeralDespesas: number;
-  saldoLiquido: number;
+export interface TotaisPessoasResultDto {
+  pessoas: PagedResult<TotalPessoa>
+  totalGeralReceitas: number
+  totalGeralDespesas: number
+  saldoLiquido: number
 }
 
 export interface TotalCategoria {
-  categoriaId: string;
-  categoriaNome: string;
-  finalidade: Finalidade;
-  totalReceitas: number;
-  totalDespesas: number;
-  saldo: number;
+  id: number
+  descricao: string
+  totalReceitas: number
+  totalDespesas: number
+  saldo: number
 }
 
-export interface RelatorioTotaisPorCategoria {
-  itens: TotalCategoria[];
-  totalGeralReceitas: number;
-  totalGeralDespesas: number;
-  saldoLiquido: number;
+export interface TotaisCategoriasResultDto {
+  categorias: PagedResult<TotalCategoria>
+  totalGeralReceitas: number
+  totalGeralDespesas: number
+  saldoLiquido: number
 }

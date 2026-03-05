@@ -1,4 +1,3 @@
-// components/ui/Modal.tsx
 import { useEffect } from 'react'
 import { X } from 'lucide-react'
 import styles from './Modal.module.scss'
@@ -12,7 +11,6 @@ interface ModalProps {
 }
 
 export default function Modal({ title, onClose, children, wide }: ModalProps) {
-  // Fecha com Escape
   useEffect(() => {
     const fn = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
     window.addEventListener('keydown', fn)

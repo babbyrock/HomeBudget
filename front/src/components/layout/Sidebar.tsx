@@ -1,4 +1,3 @@
-// components/layout/Sidebar.tsx
 import { NavLink } from 'react-router-dom'
 import { Users, Tag, ArrowLeftRight, BarChart2, PieChart, Wallet } from 'lucide-react'
 import styles from './Sidebar.module.scss'
@@ -26,7 +25,6 @@ function NavItem({ to, icon, label }: NavItemProps) {
 export default function Sidebar() {
   return (
     <aside className={styles.sidebar}>
-      {/* Logo */}
       <div className={styles.logo}>
         <div className={styles.logoMark}>
           <Wallet size={18} />
@@ -37,7 +35,6 @@ export default function Sidebar() {
         </div>
       </div>
 
-      {/* Navegação */}
       <nav className={styles.nav}>
         <span className={styles.sectionLabel}>Cadastros</span>
         <NavItem to="/pessoas"    icon={<Users size={15} />}          label="Pessoas"    />
@@ -49,10 +46,6 @@ export default function Sidebar() {
         <NavItem to="/relatorios/categorias" icon={<PieChart size={15} />}  label="Por Categoria" />
       </nav>
 
-      {/* Footer */}
-      <div className={styles.foot}>
-        <span>v1.0.0</span>
-      </div>
     </aside>
   )
 }

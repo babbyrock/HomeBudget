@@ -1,4 +1,5 @@
-﻿using RestWithASPNET10.Model.Base;
+﻿using HomeBudget.Domain.Enums;
+using RestWithASPNET10.Model.Base;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -9,26 +10,13 @@ namespace HomeBudget.Domain.Entities
 {
     public class Transacao : BaseEntity
     {
-        [Required]
-        [Column("descricao", TypeName = "varchar(400)")]
         public string Descricao { get; set; }
-
-        [Required]
-        [Column("valor", TypeName = "decimal(18,2)")]
         public decimal Valor { get; set; }
+        public TipoTransacao Tipo { get; set; }
+        public long PessoaId { get; set; }
+        public long CategoriaId { get; set; }
 
-        [Required]
-        [Column("tipo", TypeName = "varchar(20)")]
-        public string Tipo { get; set; } 
-
-        [Required]
-        [ForeignKey("Pessoa")]
-        public Guid PessoaId { get; set; }
         public Pessoa Pessoa { get; set; }
-
-        [Required]
-        [ForeignKey("Categoria")]
-        public Guid CategoriaId { get; set; }
         public Categoria Categoria { get; set; }
 
     }

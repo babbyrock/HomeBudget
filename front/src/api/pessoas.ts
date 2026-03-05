@@ -1,45 +1,21 @@
-// ============================================================
-// api/pessoas.ts
-// Funções que serão chamadas pelo React Query.
-// Espelha: GET /api/pessoas, POST, PUT /api/pessoas/:id, DELETE
-// ============================================================
+import axios from 'axios'
+import type { Pessoa, PagedResult, CreatePessoaDto } from '@/types'
 
-import type { CreatePessoaDto, Pessoa } from '../types'
-import { db, delay, uuid } from './mockDb'
+const BASE = '/api/pessoas'
 
 export const pessoasApi = {
-  /** GET /api/pessoas */
-  list: async (): Promise<Pessoa[]> => {
-    await delay()
-    return [...db.pessoas]
-  },
+  list: (page = 1, pageSize = 10): Promise<PagedResult<Pessoa>> =>
+    axios.get(BASE, { params: { page, pageSize } }).then(r => r.data),
 
-  /** POST /api/pessoas */
-  create: async (dto: CreatePessoaDto): Promise<Pessoa> => {
-    await delay()
-    const nova: Pessoa = { id: uuid(), ...dto }
-    db.pessoas.push(nova)
-    return nova
-  },
+  create: (dto: CreatePessoaDto): Promise<Pessoa> =>
+    axios.post(BASE, dto).then(r => r.data),
 
-  /** PUT /api/pessoas/:id */
-  update: async (id: string, dto: CreatePessoaDto): Promise<Pessoa> => {
-    await delay()
-    const idx = db.pessoas.findIndex((p) => p.id === id)
-    if (idx === -1) throw new Error('Pessoa não encontrada')
-    db.pessoas[idx] = { ...db.pessoas[idx], ...dto }
-    return db.pessoas[idx]
-  },
+  update: (id: number, dto: CreatePessoaDto): Promise<Pessoa> =>
+    axios.put(`${BASE}/${id}`, dto).then(r => r.data),
 
-  /**
-   * DELETE /api/pessoas/:id
-   * Regra: ao deletar, remove todas as transações dessa pessoa (cascata)
-   */
-  delete: async (id: string): Promise<void> => {
-    await delay()
-    const idx = db.pessoas.findIndex((p) => p.id === id)
-    if (idx === -1) throw new Error('Pessoa não encontrada')
-    db.transacoes = db.transacoes.filter((t) => t.pessoaId !== id)
-    db.pessoas.splice(idx, 1)
-  },
+  delete: (id: number): Promise<void> =>
+    axios.delete(`${BASE}/${id}`).then(r => r.data),
+
+  totais: (page = 1, pageSize = 10) =>
+    axios.get(`${BASE}/totais`, { params: { page, pageSize } }).then(r => r.data),
 }

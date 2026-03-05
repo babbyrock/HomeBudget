@@ -1,5 +1,5 @@
-// pages/pessoas/PessoasPage.module.scss
 @use '@/styles/variables' as *;
+@use 'sass:color';
 
 .tableWrap {
   overflow-x: auto;
@@ -55,11 +55,9 @@
   color: $text-primary;
 }
 
-// Badges
-.badgeAmber { @include badge($color-red-dim, darken($color-red, 5%)); }
+.badgeAmber { @include badge($color-red-dim, color.adjust($color-red, $lightness: -5%)); }
 .badgeBlue  { @include badge($color-blue-dim, $color-blue); }
 
-// Action buttons
 .actions {
   display: flex;
   gap: 4px;
@@ -83,7 +81,6 @@
   &.danger:hover { background: $color-red-dim; color: $color-red; }
 }
 
-// Delete modal
 .deleteText {
   font-size: 0.9rem;
   color: $text-secondary;

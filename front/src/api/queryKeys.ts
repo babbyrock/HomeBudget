@@ -1,13 +1,7 @@
-// ============================================================
-// api/queryKeys.ts
-// Chaves centralizadas do React Query.
-// Facilita invalidação de cache após mutations.
-// ============================================================
-
 export const queryKeys = {
-  pessoas:    ['pessoas']    as const,
-  categorias: ['categorias'] as const,
-  transacoes: ['transacoes'] as const,
-  relatorioPorPessoa:    ['relatorio', 'pessoas']    as const,
-  relatorioPorCategoria: ['relatorio', 'categorias'] as const,
+  pessoas:    (page = 1, pageSize = 10) => ['pessoas', page, pageSize] as const,
+  categorias: (page = 1, pageSize = 10) => ['categorias', page, pageSize] as const,
+  transacoes: (page = 1, pageSize = 10) => ['transacoes', page, pageSize] as const,
+  relatorioPorPessoa:    (page = 1, pageSize = 10) => ['relatorio', 'pessoas', page, pageSize] as const,
+  relatorioPorCategoria: (page = 1, pageSize = 10) => ['relatorio', 'categorias', page, pageSize] as const,
 }

@@ -6,14 +6,12 @@ namespace HomeBudget.Domain.Entities
 {
     public class Pessoa : BaseEntity
     {
-        [Required]
-        [Column("nome", TypeName = "varchar")]
         public string Nome { get; set; }
-        [Required]
-        [Column("idade", TypeName = "int")]
         public int Idade { get; set; }
 
         public ICollection<Transacao> Transacoes { get; set; } = new List<Transacao>();
+
+        public bool MenorDeIdade() => Idade < 18;
 
     }
 }

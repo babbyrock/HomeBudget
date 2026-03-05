@@ -1,5 +1,5 @@
-// components/ui/Button.module.scss
 @use '@/styles/variables' as *;
+@use 'sass:color';
 
 .btn {
   display: inline-flex;
@@ -19,11 +19,9 @@
   &:not(:disabled):active { transform: scale(0.97); }
 }
 
-// Sizes
 .md { padding: 9px 18px; font-size: 0.875rem; }
 .sm { padding: 5px 12px; font-size: 0.8rem; }
 
-// Variants
 .primary {
   background: $accent;
   color: #0d0d0d;
@@ -35,7 +33,7 @@
   background: $bg-elevated;
   color: $text-primary;
   border-color: $border-subtle;
-  &:hover:not(:disabled) { background: lighten($bg-elevated, 4%); border-color: $border-strong; }
+  &:hover:not(:disabled) { background: color.adjust($bg-elevated, $lightness: 4%); }
 }
 
 .danger {
@@ -52,7 +50,6 @@
   &:hover:not(:disabled) { background: $bg-elevated; color: $text-primary; }
 }
 
-// Loading spinner
 .spinner {
   width: 14px;
   height: 14px;

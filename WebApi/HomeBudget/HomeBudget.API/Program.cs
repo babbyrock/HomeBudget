@@ -1,29 +1,31 @@
 using HomeBudget.API.Configurations;
+using HomeBudget.Domain.Interfaces;
+using HomeBudget.Persistence.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddMigrationConfiguration(builder.Configuration);
-
-// Add services to the container.
+builder.Services.AddSwaggerConfiguration();
+builder.Services.AddApplicationConfiguration();
+builder.Services.AddCorsConfiguration();
 
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+
+builder.Services.AddScoped(typeof(IRepositoryBase<>), typeof(RepositoryBase<>));
+builder.Services.AddScoped<ITransacaoRepository, TransacaoRepository>();
 
 var app = builder.Build();
 
 app.UseMigrationConfiguration();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.UseSwaggerConfiguration();
 }
 
 app.UseHttpsRedirection();
-
+app.UseCorsConfiguration();
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();

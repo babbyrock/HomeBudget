@@ -1,4 +1,5 @@
 ﻿using HomeBudget.Domain.Entities;
+using HomeBudget.Persistence.Configurations;
 using Microsoft.EntityFrameworkCore;
 
 namespace HomeBudget.Persistence.Context
@@ -18,7 +19,9 @@ namespace HomeBudget.Persistence.Context
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
+            modelBuilder.ApplyConfiguration(new PessoaConfiguration());
+            modelBuilder.ApplyConfiguration(new CategoriaConfiguration());
+            modelBuilder.ApplyConfiguration(new TransacaoConfiguration());
         }
     }
 

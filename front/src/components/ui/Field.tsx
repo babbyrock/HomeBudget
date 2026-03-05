@@ -1,5 +1,3 @@
-// components/ui/Field.tsx
-// Wrapper para campos de formulário com label + mensagem de erro
 import styles from './Field.module.scss'
 
 interface FieldProps {
